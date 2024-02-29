@@ -6,7 +6,7 @@ console.log("test");
 
 const myProjects = [];
 
-class ToDo {
+class Task {
     constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
@@ -18,11 +18,6 @@ class ToDo {
     markCompleted() {
     this.completed = true;
     };
-};
-
-function addToDoToProject(title, description, dueDate, priority) {
-    const newToDo = new ToDo(title, description, dueDate, priority);
-    myProjects.push(newToDo);
 };
 
 const containerElement = document.querySelector(".container");

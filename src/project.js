@@ -14,21 +14,31 @@ class Project {
 };
 
 function displayProjects(myProjects, projectElement) {
-    const projectListElement = document.createElement("ul");
-    projectListElement.classList.add("projectList");
-    const projectListItemElement = document.createElement("li");
-    projectListItemElement.textContent = "";
+    // Clear the list of projects
+    const existingProjectList = document.getElementById("projectList");
+    if (existingProjectList) {
+        existingProjectList.remove();
+    }
 
+    // Create a new list of projects
+    const projectListElement = document.createElement("ul");
+    projectListElement.id = "projectList"; 
+    projectListElement.classList.add("projectList");
+
+    //Populate the list of projects
     for (let i = 0; i < myProjects.length; i++) {
         const project = myProjects[i];
+        const projectListItemElement = document.createElement("li");
+        const projectListItemButtonElement = document.createElement("button");
 
-        projectListItemElement.textContent = project.title; 
+        projectListItemButtonElement.type = "button";
+        projectListItemButtonElement.textContent = project.title;
 
-        projectElement.appendChild(projectListItemElement);
+        projectListItemElement.appendChild(projectListItemButtonElement);
+        projectListElement.appendChild(projectListItemElement);
     };
 
-    const containerElement = document.querySelector(".container");
-    containerElement.appendChild(projectListElement);
+    projectElement.appendChild(projectListElement);
 };
 
 function addProject(myProjects, projectElement) {
@@ -63,6 +73,7 @@ function addProject(myProjects, projectElement) {
         projectForm.appendChild(addButton);
         projectForm.appendChild(deleteButton);
 
+        //Save project title input to store as object
         projectForm.addEventListener("submit", function(event) {
             event.preventDefault();
 
