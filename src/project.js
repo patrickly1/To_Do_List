@@ -13,7 +13,21 @@ class Project {
     };
 };
 
-function displayProjects(myProjects, projectElement) {
+class Task {
+    constructor(title, description, dueDate, priority) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.completed = false;
+    };
+
+    markCompleted() {
+    this.completed = true;
+    };
+};
+
+function displayProjects(myProjects, projectElement, taskElement) {
     // Clear the list of projects
     const existingProjectList = document.getElementById("projectList");
     if (existingProjectList) {
@@ -34,11 +48,91 @@ function displayProjects(myProjects, projectElement) {
         projectListItemButtonElement.type = "button";
         projectListItemButtonElement.textContent = project.title;
 
+        //Add click event listener to each project button
+        projectListItemButtonElement.addEventListener("click", (event) => {
+            const projectName = event.target.textContent;
+            const clickedproject = myProjects.find(p => p.title === projectName);
+            displayTasks(clickedproject.tasks, taskElement);
+            addTasktoProject(clickedproject, taskElement);
+        });
+
         projectListItemElement.appendChild(projectListItemButtonElement);
         projectListElement.appendChild(projectListItemElement);
     };
 
     projectElement.appendChild(projectListElement);
+};
+
+function displayTasks(tasks, taskElement) {
+    // Clear the list of tasks
+    const existingTaskList = document.getElementById("taskList");
+    if (existingTaskList) {
+        existingTaskList.remove();
+    }
+
+    // Create a new list of tasks
+    const taskListElement = document.createElement("ul");
+    taskListElement.id = "taskList"; 
+    taskListElement.classList.add("taskList");
+
+    tasks.forEach(task => {
+        const taskListItemElement = document.createElement("li");
+        taskListItemElement.textContent = task.title;
+        taskListElement.appendChild(taskListItemElement);
+    });
+
+    taskElement.appendChild(taskListElement);
+};
+
+function addTasktoProject(project, taskElement) {
+    const addTaskButtonElement = document.querySelector('#addTaskButton');
+    addTaskButtonElement.addEventListener("click", function() {
+        const taskForm = document.createElement("form");
+        taskForm.id = "taskForm";
+        
+        const titleLabel = document.createElement("label");
+        titleLabel.textContent = "Task:";
+        titleLabel.setAttribute("for", "taskTitle");
+
+        const titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.id = "taskTitle";
+        titleInput.name = "tasktitle";
+        titleInput.required = true;
+
+        const addButton = document.createElement("button");
+        addButton.type = "submit";
+        addButton.textContent = "Add Task";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete Form";
+        deleteButton.addEventListener("click", function() {
+            taskForm.remove();
+        });
+
+        taskForm.appendChild(titleLabel);
+        taskForm.appendChild(titleInput);
+        taskForm.appendChild(addButton);
+        taskForm.appendChild(deleteButton);
+
+        //Save task title input to store as object
+        taskForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const title = titleInput.value;
+
+            const newTask = new Task(title);
+
+            project.addTask(newTask);
+
+            displayTasks(project.tasks, taskElement);
+
+            titleInput.value = "";
+        })
+
+        taskElement.appendChild(taskForm);
+    });
 };
 
 function addProject(myProjects, projectElement) {
@@ -95,5 +189,8 @@ function addProject(myProjects, projectElement) {
 export {
     addProject,
     displayProjects,
-    Project
+    Project, 
+    Task,
+    displayTasks,
+    addTasktoProject
 };

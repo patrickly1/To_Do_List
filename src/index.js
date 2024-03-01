@@ -1,27 +1,18 @@
 import _ from 'lodash';
 import './styles.css';
-import {addProject, displayProjects, Project} from './project';
+import {addProject, displayProjects, Project, Task, addTasktoProject, displayTasks} from './project';
 
 console.log("test");
 
 const myProjects = [];
-
-class Task {
-    constructor(title, description, dueDate, priority) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority;
-        this.completed = false;
-    };
-
-    markCompleted() {
-    this.completed = true;
-    };
-};
+const tasks = [];
 
 const containerElement = document.querySelector(".container");
 const projectElement = document.querySelector(".project")
+const taskElement = document.querySelector(".task");
 
 addProject(myProjects, projectElement);
-displayProjects(myProjects, projectElement);
+displayProjects(myProjects, projectElement, taskElement);
+addTasktoProject(myProjects[0], taskElement);
+displayTasks(tasks, taskElement);
+
