@@ -7,12 +7,58 @@ console.log("test");
 const myProjects = [];
 const tasks = [];
 
-const containerElement = document.querySelector(".container");
 const projectElement = document.querySelector(".project")
 const taskElement = document.querySelector(".task");
+const addTaskButtonElement = document.querySelector("#addTaskButton")
 
-addProject(myProjects, projectElement);
-displayProjects(myProjects, projectElement, taskElement);
-addTasktoProject(myProjects[0], taskElement);
-displayTasks(tasks, taskElement);
+addProject(myProjects, projectElement, taskElement);
+//projectElement.addEventListener("click", function() {
+//    addTasktoProject(myProjects[0], taskElement);
+//});
 
+let lastClickedProjectIndex = 0;
+
+addTaskButtonElement.addEventListener("click", function() {
+    const taskForm = document.getElementById("taskForm");
+    if (taskForm) {
+        taskForm.remove(); // Remove existing task form if it exists
+    }
+    console.log("task event listener");
+    if (myProjects[lastClickedProjectIndex] !== undefined) {
+        addTasktoProject(myProjects[lastClickedProjectIndex], taskElement); // Call addTasktoProject again to add a new task form
+    } else{
+        console.log("not working");
+    }
+
+});
+
+projectElement.addEventListener("click", function(event) {
+    const taskForm = document.getElementById("taskForm");
+    if (taskForm) {
+        taskForm.remove(); // Remove existing task form if it exists
+    }
+
+    const clickedButton = event.target.nodeName === "BUTTON" ? event.target : event.target.closest("button");
+    if (clickedButton) {
+        const projectName = clickedButton.textContent;
+        const clickedProjectIndex = myProjects.findIndex(project => project.title === projectName);
+        lastClickedProjectIndex = clickedProjectIndex;
+        
+        console.log(clickedProjectIndex, projectName);
+        if (clickedProjectIndex !== -1) {
+            addTasktoProject(myProjects[clickedProjectIndex], taskElement);
+            console.log("myProjects:", myProjects);
+        };
+    };
+
+    //if (event.target.tagName === "BUTTON") {
+    //    const projectName = event.target.textContent;
+    //    const clickedProjectIndex = myProjects.findIndex(project => project.title === projectName);
+    //    
+    //    console.log(clickedProjectIndex, projectName);
+    //    if (clickedProjectIndex !== 1) {
+    //        addTasktoProject(myProjects[clickedProjectIndex], taskElement);
+    //        console.log("myProjects:", myProjects);
+    //    };
+    //};
+});
