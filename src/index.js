@@ -7,14 +7,11 @@ console.log("test");
 const myProjects = [];
 const tasks = [];
 
-const projectElement = document.querySelector(".project")
+const projectElement = document.querySelector(".project");
 const taskElement = document.querySelector(".task");
-const addTaskButtonElement = document.querySelector("#addTaskButton")
+const addTaskButtonElement = document.querySelector("#addTaskButton");
 
 addProject(myProjects, projectElement, taskElement);
-//projectElement.addEventListener("click", function() {
-//    addTasktoProject(myProjects[0], taskElement);
-//});
 
 let lastClickedProjectIndex = 0;
 
@@ -50,15 +47,4 @@ projectElement.addEventListener("click", function(event) {
             console.log("myProjects:", myProjects);
         };
     };
-
-    //if (event.target.tagName === "BUTTON") {
-    //    const projectName = event.target.textContent;
-    //    const clickedProjectIndex = myProjects.findIndex(project => project.title === projectName);
-    //    
-    //    console.log(clickedProjectIndex, projectName);
-    //    if (clickedProjectIndex !== 1) {
-    //        addTasktoProject(myProjects[clickedProjectIndex], taskElement);
-    //        console.log("myProjects:", myProjects);
-    //    };
-    //};
 });

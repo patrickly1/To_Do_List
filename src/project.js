@@ -44,10 +44,10 @@ function displayProjects(myProjects, projectElement, taskElement) {
         const project = myProjects[i];
         const projectListItemElement = document.createElement("li");
         const projectListItemButtonElement = document.createElement("button");
-
+        
         projectListItemButtonElement.type = "button";
         projectListItemButtonElement.textContent = project.title;
-
+        
         //Add click event listener to each project button
         projectListItemButtonElement.addEventListener("click", (event) => {
             const projectName = event.target.textContent;
@@ -56,10 +56,22 @@ function displayProjects(myProjects, projectElement, taskElement) {
             //addTasktoProject(clickedproject, taskElement);
         });
 
-        projectListItemElement.appendChild(projectListItemButtonElement);
-        projectListElement.appendChild(projectListItemElement);
-    };
+        const projectListItemDeleteButtonElement = document.createElement("button");
+        projectListItemDeleteButtonElement.type = "button";
+        projectListItemDeleteButtonElement.textContent = "Remove Project";
 
+        projectListItemDeleteButtonElement.addEventListener("click", () => {
+            myProjects.splice(i, 1); //remove project from myProjects at given index, i
+            projectListItemElement.remove(); //remove the corresponding li element from the list
+            displayTasks([]);
+            console.log("projects after remove:", myProjects);
+        });
+        
+        projectListItemElement.appendChild(projectListItemButtonElement);
+        projectListItemElement.appendChild(projectListItemDeleteButtonElement);
+        projectListElement.appendChild(projectListItemElement);
+        
+    };
     projectElement.appendChild(projectListElement);
 };
 
@@ -75,12 +87,24 @@ function displayTasks(tasks, taskElement) {
     taskListElement.id = "taskList"; 
     taskListElement.classList.add("taskList");
 
-    tasks.forEach(task => {
+    for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
         const taskListItemElement = document.createElement("li");
         taskListItemElement.textContent = task.title;
         taskListElement.appendChild(taskListItemElement);
-    });
 
+        const taskListItemDeleteButtonElement = document.createElement("button");
+        taskListItemDeleteButtonElement.type = "button";
+        taskListItemDeleteButtonElement.textContent = "Remove Task";
+        taskListElement.appendChild(taskListItemDeleteButtonElement);
+        
+        taskListItemDeleteButtonElement.addEventListener("click", () => {
+            tasks.splice(i, 1); //remove task from tasks at given index, i
+            taskListItemElement.remove(); //remove the corresponding li element from the list
+            taskListItemDeleteButtonElement.remove();
+            console.log("tasks after remove:", myProjects.tasks);
+        });
+    }
     taskElement.appendChild(taskListElement);
 };
 
